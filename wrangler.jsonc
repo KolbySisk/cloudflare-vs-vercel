@@ -17,7 +17,42 @@
 	},
 	"observability": {
 		"enabled": true
-	}
+	},
+	"services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "cloudflare-vs-vercel"
+    }
+  ],
+	"r2_buckets": [
+		// Use R2 incremental cache
+    // See https://opennext.js.org/cloudflare/caching
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "cloudflare-vs-vercel"
+    }
+  ],
+	"durable_objects": {
+    "bindings": [
+      {
+        "name": "NEXT_CACHE_DO_QUEUE",
+        "class_name": "DOQueueHandler"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["DOQueueHandler"]
+    }
+  ],
+	"d1_databases": [
+    {
+      "binding": "NEXT_TAG_CACHE_D1",
+      "database_id": "34a075fc-a27a-4301-8063-65d3f61b6cac",
+      "database_name": "cloudflare-vs-vercel-d1"
+    }
+  ]
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
